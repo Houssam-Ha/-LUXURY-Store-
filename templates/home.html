@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block meta_description %}LUXARO - متجر ملابس رجالية فاخرة في أكادير، المغرب. اكتشف مجموعتنا المميزة من الهوديز، الجاكيتات، والملابس العصرية بجودة عالية{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #1B2A4A 0%, #2C3D5E 100%);
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 600px;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 1rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .hero-image {
+            height: 350px;
+        }
+    }
+
+    /* Product Card */
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+        .product-image {
+            height: 280px;
+        }
+    }
+
+    /* Category Card */
+    .category-card {
+        background: linear-gradient(135deg, #C9A84C 0%, #D4B96E 100%);
+        transition: transform 0.3s ease;
+    }
+
+    .category-card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Discount Badge */
+    .discount-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #DC2626;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.875rem;
+        z-index: 10;
+    }
+
+    /* Sticky CTA for Mobile */
+    .sticky-cta {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- Text Content -->
+            <div class="text-center md:text-right order-2 md:order-1">
+                <span class="inline-block bg-gold text-navy px-6 py-3 rounded-full text-sm font-bold mb-6">
+                    ✨ مرحباً بك في LUXARO
+                </span>
+                <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    الأناقة والفخامة
+                    <span class="text-gold">بين يديك</span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+                    اكتشف مجموعتنا المميزة من الملابس الرجالية الفاخرة في أكادير، المغرب.
+                    جودة استثنائية، تصميمات عصرية، وأسعار لا تُقاوم.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#featured" class="btn-primary text-center text-lg">
+                        تصفح المنتجات
+                    </a>
+                    <a href="tel:0773324107" class="bg-white hover:bg-gray-100 text-navy font-semibold py-3 px-8 rounded-lg transition-all duration-200 text-center flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                        0773-324107
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image -->
+            <div class="order-1 md:order-2">
+                <img
+                    src="/static/images/hero/luxaro-hero.jpg"
+                    alt="LUXARO - ملابس رجالية فاخرة"
+                    class="hero-image mx-auto"
+                    loading="lazy"
+                    onerror="this.src='https://via.placeholder.com/600x500/1B2A4A/C9A84C?text=LUXARO+Store'"
+                >
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Bar -->
+<div class="bg-gold py-4">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center md:text-right">
+            <div class="flex items-center justify-center md:justify-start gap-3 text-navy">
+                <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                </svg>
+                <div>
+                    <p class="font-bold text-sm">توصيل مجاني</p>
+                    <p class="text-xs text-navy/80">داخل أكادير</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-center md:justify-start gap-3 text-navy">
+                <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <p class="font-bold text-sm">جودة مضمونة</p>
+                    <p class="text-xs text-navy/80">100%</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-center md:justify-start gap-3 text-navy">
+                <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <p class="font-bold text-sm">الدفع عند الاستلام</p>
+                    <p class="text-xs text-navy/80">آمن وسهل</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-center md:justify-start gap-3 text-navy">
+                <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                </svg>
+                <div>
+                    <p class="font-bold text-sm">خدمة عملاء</p>
+                    <p class="text-xs text-navy/80">متواصلة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<section class="py-16 bg-cream">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="font-heading text-4xl font-bold text-navy mb-4">التصنيفات</h2>
+            <p class="text-gray-600 text-lg">تصفح منتجاتنا حسب التصنيف</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {% for category in categories %}
+            <a href="#" class="category-card rounded-2xl p-8 text-center shadow-lg">
+                <div class="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-navy">{{ category.name }}</h3>
+                <p class="text-navy/80 text-sm mt-2">{{ category.products.count }} منتج</p>
+            </a>
+            {% empty %}
+            <!-- Default Categories -->
+            <a href="#" class="category-card rounded-2xl p-8 text-center shadow-lg">
+                <div class="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-navy">هودي</h3>
+            </a>
+            <a href="#" class="category-card rounded-2xl p-8 text-center shadow-lg">
+                <div class="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-navy">جاكيت</h3>
+            </a>
+            <a href="#" class="category-card rounded-2xl p-8 text-center shadow-lg">
+                <div class="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-navy">بنطلون</h3>
+            </a>
+            <a href="#" class="category-card rounded-2xl p-8 text-center shadow-lg">
+                <div class="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-heading text-xl font-bold text-navy">قميص</h3>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section id="featured" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="font-heading text-4xl font-bold text-navy mb-4">المنتجات المميزة</h2>
+            <p class="text-gray-600 text-lg">اختارتنا بعناية لك</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {% for product in featured_products %}
+            <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="relative">
+                    {% if product.main_image %}
+                    <img
+                        src="{{ product.main_image.url }}"
+                        alt="{{ product.name }}"
+                        class="product-image"
+                        loading="lazy"
+                    >
+                    {% else %}
+                    <img
+                        src="https://via.placeholder.com/400x350/1B2A4A/C9A84C?text={{ product.name|urlencode }}"
+                        alt="{{ product.name }}"
+                        class="product-image"
+                        loading="lazy"
+                    >
+                    {% endif %}
+
+                    {% if product.discount_percentage > 0 %}
+                    <span class="discount-badge">-{{ product.discount_percentage }}%</span>
+                    {% endif %}
+                </div>
+
+                <div class="p-6">
+                    <h3 class="font-heading text-2xl font-bold text-navy mb-2">{{ product.name }}</h3>
+                    {% if product.category %}
+                    <p class="text-gray-500 text-sm mb-3">{{ product.category.name }}</p>
+                    {% endif %}
+
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl font-bold text-gold">{{ product.price }} درهم</span>
+                        {% if product.original_price %}
+                        <span class="text-lg text-gray-400 line-through">{{ product.original_price }} درهم</span>
+                        {% endif %}
+                    </div>
+
+                    <a href="{% url 'store:product_detail' product.slug %}" class="block w-full bg-navy hover:bg-navy-light text-white font-semibold py-3 rounded-lg text-center transition-all duration-200">
+                        عرض التفاصيل
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Placeholder Products -->
+            <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="relative">
+                    <img
+                        src="https://via.placeholder.com/400x350/1B2A4A/C9A84C?text=LUXARO+Product"
+                        alt="منتج LUXARO"
+                        class="product-image"
+                        loading="lazy"
+                    >
+                </div>
+                <div class="p-6">
+                    <h3 class="font-heading text-2xl font-bold text-navy mb-2">هودي Burberry London</h3>
+                    <p class="text-gray-500 text-sm mb-3">هودي رجالي</p>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl font-bold text-gold">109 درهم</span>
+                        <span class="text-lg text-gray-400 line-through">130 درهم</span>
+                    </div>
+                    <a href="{% url 'store:hoodie_landing' %}" class="block w-full bg-navy hover:bg-navy-light text-white font-semibold py-3 rounded-lg text-center transition-all duration-200">
+                        عرض التفاصيل
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="#" class="inline-block bg-gold hover:bg-gold-dark text-navy font-bold py-4 px-12 rounded-full transition-all duration-200">
+                عرض جميع المنتجات
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Products Section -->
+<section class="py-16 bg-cream">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="font-heading text-4xl font-bold text-navy mb-4">أحدث المنتجات</h2>
+            <p class="text-gray-600 text-lg">وصل حديثاً</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {% for product in latest_products %}
+            <div class="product-card bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="relative">
+                    {% if product.main_image %}
+                    <img
+                        src="{{ product.main_image.url }}"
+                        alt="{{ product.name }}"
+                        class="w-full h-64 object-cover"
+                        loading="lazy"
+                    >
+                    {% else %}
+                    <img
+                        src="https://via.placeholder.com/300x250/1B2A4A/C9A84C?text=Product"
+                        alt="{{ product.name }}"
+                        class="w-full h-64 object-cover"
+                        loading="lazy"
+                    >
+                    {% endif %}
+                </div>
+                <div class="p-4">
+                    <h3 class="font-heading text-lg font-bold text-navy mb-2">{{ product.name }}</h3>
+                    <p class="text-gold font-bold">{{ product.price }} درهم</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-16 bg-navy text-white">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-right">
+                <h2 class="font-heading text-4xl font-bold text-gold mb-6">من نحن</h2>
+                <p class="text-xl text-gray-300 mb-6 leading-relaxed">
+                    LUXARO هو متجر ملابس رجالية فاخرة يقع في أكادير، المغرب.
+                    نسعى لتقديم أفضل المنتجات العصرية بجودة استثنائية وأسعار منافسة.
+                </p>
+                <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+                    نؤمن بأن الأناقة حق للجميع، ولذلك نختار منتجاتنا بعناية فائقة
+                    لتناسب ذوق الرجل العصري الذي يبحث عن التميز.
+                </p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="text-center">
+                        <p class="text-4xl font-bold text-gold mb-2">+500</p>
+                        <p class="text-gray-400">عميل سعيد</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-4xl font-bold text-gold mb-2">+1000</p>
+                        <p class="text-gray-400">طلب مُسلم</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <img
+                    src="/static/images/about/luxaro-about.jpg"
+                    alt="عن LUXARO"
+                    class="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+                    loading="lazy"
+                    onerror="this.src='https://via.placeholder.com/500x600/1B2A4A/C9A84C?text=LUXARO+About'"
+                >
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gold">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="font-heading text-4xl font-bold text-navy mb-4">جاهز للطلب؟</h2>
+        <p class="text-xl text-navy/80 mb-8">تواصل معنا الآن واحصل على عرض خاص</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="tel:0773324107" class="bg-navy hover:bg-navy-dark text-white font-bold py-4 px-12 rounded-full transition-all duration-200 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                </svg>
+                اتصل الآن: 0773-324107
+            </a>
+            <a href="https://wa.me/212773324107" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-full transition-all duration-200 flex items-center justify-center gap-2">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                واتساب
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

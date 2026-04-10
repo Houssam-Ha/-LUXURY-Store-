@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - LUXARO{% endblock %}
+
+{% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+
+{% block content %}
+<article class="py-16 bg-cream">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Back Button -->
+            <a href="{% url 'blog_list' %}" class="inline-flex items-center gap-2 text-navy hover:text-gold transition mb-8">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                العودة للمدونة
+            </a>
+
+            <!-- Header -->
+            <header class="mb-8">
+                <h1 class="font-heading text-4xl md:text-5xl font-bold text-navy mb-4">{{ post.title }}</h1>
+                <div class="flex items-center gap-4 text-gray-500">
+                    <span>{{ post.published_at|date:"d F Y" }}</span>
+                    <span>•</span>
+                    <span>بقلم {{ post.author }}</span>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            {% if post.image %}
+            <img
+                src="{{ post.image.url }}"
+                alt="{{ post.title }}"
+                class="w-full h-96 object-cover rounded-2xl shadow-xl mb-8"
+                onerror="this.src='https://via.placeholder.com/800x400/1B2A4A/C9A84C?text={{ post.title|urlencode }}'"
+            >
+            {% endif %}
+
+            <!-- Content -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-8">
+                <div class="prose prose-lg max-w-none text-gray-700">
+                    {{ post.content|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Share -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="font-heading text-xl font-semibold text-navy mb-4">شارك المقال</h3>
+                <div class="flex gap-4">
+                    <a href="https://wa.me/?text={{ post.title|urlencode }} - {{ request.build_absolute_uri }}" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                        واتساب
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        فيسبوك
+                    </a>
+                </div>
+            </div>
+
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <div class="mt-12">
+                <h3 class="font-heading text-2xl font-bold text-navy mb-6">مقالات ذات صلة</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    {% for related in related_posts %}
+                    <a href="{% url 'blog_detail' related.slug %}" class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                        <img
+                            src="{{ related.image.url|default:'/static/images/blog-placeholder.jpg' }}"
+                            alt="{{ related.title }}"
+                            class="w-full h-32 object-cover"
+                            onerror="this.src='https://via.placeholder.com/300x150/1B2A4A/C9A84C?text={{ related.title|urlencode }}'"
+                        >
+                        <div class="p-4">
+                            <h4 class="font-heading text-lg font-semibold text-navy hover:text-gold transition">{{ related.title }}</h4>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</article>
+{% endblock %}

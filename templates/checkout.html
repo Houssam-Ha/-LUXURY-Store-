@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-cream min-h-screen">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="font-heading text-4xl font-bold text-navy text-center mb-8">إتمام الطلب</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Order Summary -->
+                {% if product %}
+                <div class="bg-white rounded-xl shadow-lg p-6 h-fit">
+                    <h2 class="font-heading text-2xl font-semibold text-navy mb-6">ملخص الطلب</h2>
+
+                    <div class="mb-6">
+                        <img
+                            src="{{ product.main_image.url|default:'/static/images/products/hoodie-main.jpg' }}"
+                            alt="{{ product.name }}"
+                            class="w-full h-48 object-cover rounded-lg mb-4"
+                            onerror="this.src='https://via.placeholder.com/400x300/1B2A4A/C9A84C?text={{ product.name|urlencode }}'"
+                        >
+                        <h3 class="font-semibold text-lg text-navy">{{ product.name }}</h3>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span class="text-2xl font-bold text-gold">{{ product.price }} درهم</span>
+                            {% if product.original_price %}
+                            <span class="text-gray-400 line-through">{{ product.original_price }} درهم</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">السعر:</span>
+                            <span class="font-semibold">{{ product.price }} درهم</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">التوصيل:</span>
+                            <span class="text-green-600 font-semibold">مجاناً</span>
+                        </div>
+                        <div class="border-t pt-4 mt-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-lg">الإجمالي:</span>
+                                <span class="text-2xl font-bold text-gold">{{ product.price }} درهم</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Checkout Form -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="font-heading text-2xl font-semibold text-navy mb-6">معلومات الشحن</h2>
+
+                    <form method="post" action="{% url 'checkout' %}">
+                        {% csrf_token %}
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">الاسم الكامل *</label>
+                                {{ form.customer_name }}
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">رقم الهاتف *</label>
+                                {{ form.customer_phone }}
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">البريد الإلكتروني</label>
+                                {{ form.customer_email }}
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">المدينة *</label>
+                                {{ form.city }}
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">العنوان *</label>
+                                {{ form.customer_address }}
+                            </div>
+
+                            {% if product %}
+                            <input type="hidden" name="product" value="{{ product.id }}">
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">اللون *</label>
+                                    {{ form.color }}
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">المقاس *</label>
+                                    {{ form.size }}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">الكمية</label>
+                                {{ form.quantity }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="w-full btn-primary mt-8 text-lg">
+                            تأكيد الطلب
+                        </button>
+
+                        <p class="text-center text-gray-500 text-sm mt-4">
+                            الدفع عند الاستلام - لا حاجة للدفع المسبق
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

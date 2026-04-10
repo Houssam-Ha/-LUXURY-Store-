@@ -14,14 +14,16 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(','
 
 # Applications
 INSTALLED_APPS = [
+    'store.apps.StoreConfig',
+    'blog.apps.BlogConfig',
+    'orders.apps.OrdersConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Apps (سنضيف هنا لاحقاً)
-    # 'store',
 ]
 
 MIDDLEWARE = [
@@ -54,17 +56,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LUXURYStore.wsgi.application'
 
-# Database
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# للإنتاج - قم بإلغاء التعليق عند الاستخدام:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'LUXURY_Store'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': os.environ.get('DB_NAME', 'LUXURY_Store'),
+         'USER': os.environ.get('DB_USER', 'root'),
+         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+         'HOST': os.environ.get('DB_HOST', 'localhost'),
+         'PORT': os.environ.get('DB_PORT', '3306'),
+     }
+ }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

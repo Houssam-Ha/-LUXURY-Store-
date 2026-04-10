@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<section class="py-16 bg-cream min-h-screen flex items-center">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+            <!-- Success Icon -->
+            <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h1 class="font-heading text-4xl font-bold text-navy mb-4">تم استلام طلبك بنجاح!</h1>
+
+            <p class="text-gray-600 text-lg mb-6">
+                شكراً لثقتك في LUXARO. سنتصل بك خلال 24 ساعة لتأكيد الطلب.
+            </p>
+
+            <!-- Order Details -->
+            <div class="bg-navy/5 rounded-xl p-6 mb-8">
+                <div class="grid md:grid-cols-2 gap-4 text-right">
+                    <div>
+                        <span class="text-gray-500 text-sm">رقم الطلب:</span>
+                        <p class="font-bold text-gold text-lg">{{ order.order_number }}</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-sm">اسم العميل:</span>
+                        <p class="font-semibold text-navy">{{ order.customer_name }}</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-sm">المنتج:</span>
+                        <p class="font-semibold text-navy">{{ order.product.name }}</p>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-sm">الإجمالي:</span>
+                        <p class="font-bold text-gold">{{ order.total_price }} درهم</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="text-right mb-8">
+                <h3 class="font-heading text-xl font-semibold text-navy mb-4">الخطوات التالية:</h3>
+                <ol class="space-y-3 text-gray-600">
+                    <li class="flex items-start gap-3">
+                        <span class="bg-gold text-navy w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</span>
+                        <span>سنتصل بك خلال 24 ساعة لتأكيد الطلب</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="bg-gold text-navy w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">2</span>
+                        <span>نقوم بتجهيز طلبك وشحنه</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="bg-gold text-navy w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">3</span>
+                        <span>تستلم طلبك وتقوم بالدفع</span>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/" class="btn-primary">
+                    العودة للرئيسية
+                </a>
+                <a href="https://wa.me/212773324107?text=مرحباً، أريد الاستفسار عن طلبي رقم {{ order.order_number }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200">
+                    تواصل عبر واتساب
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
