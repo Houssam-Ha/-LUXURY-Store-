@@ -51,16 +51,19 @@
         border: 2px solid #E5E7EB;
         border-radius: 0.5rem;
         transition: all 0.2s ease;
+        font-weight: 500;
     }
 
     .color-option:hover {
         border-color: #C9A84C;
+        background-color: #C9A84C;
+        color: white;
     }
 
     .color-option.selected {
-        border-color: #C9A84C;
-        background-color: #C9A84C;
-        color: white;
+        border-color: #C9A84C !important;
+        background-color: #C9A84C !important;
+        color: white !important;
     }
 
     /* Size Selection */
@@ -78,13 +81,15 @@
     }
 
     .size-option:hover {
-        border-color: #C9A84C;
+        border-color: #1B2A4A;
+        background-color: #1B2A4A;
+        color: white;
     }
 
     .size-option.selected {
-        border-color: #C9A84C;
-        background-color: #C9A84C;
-        color: white;
+        border-color: #1B2A4A !important;
+        background-color: #1B2A4A !important;
+        color: white !important;
     }
 
     /* Quantity Input */
@@ -172,7 +177,6 @@
             <div class="order-2 md:order-1" x-data="productGallery()">
                 <!-- Main Image -->
                 <div class="relative mb-6">
-                    {% if product.main_image %}
                     <img
                         x-bind:src="currentImage"
                         alt="{{ product.name }}"
@@ -180,21 +184,6 @@
                         loading="lazy"
                         onerror="this.src='https://via.placeholder.com/600x600/1B2A4A/C9A84C?text={{ product.name|urlencode }}'"
                     >
-                    {% elif product.images.first %}
-                    <img
-                        x-bind:src="currentImage"
-                        alt="{{ product.name }}"
-                        class="product-main-image mx-auto image-fade"
-                        loading="lazy"
-                    >
-                    {% else %}
-                    <img
-                        src="https://via.placeholder.com/600x600/1B2A4A/C9A84C?text={{ product.name|urlencode }}"
-                        alt="{{ product.name }}"
-                        class="product-main-image mx-auto"
-                        loading="lazy"
-                    >
-                    {% endif %}
 
                     {% if product.discount_percentage > 0 %}
                     <span class="absolute top-4 right-4 discount-badge">
@@ -205,7 +194,7 @@
 
                 <!-- Thumbnail Gallery -->
                 <div class="flex gap-3 justify-center flex-wrap">
-                    {% if product.images.all %}
+                    {% if product.images.all|length > 0 %}
                         {% for image in product.images.all %}
                         <img
                             src="{{ image.image.url }}"
@@ -214,11 +203,20 @@
                             :class="{ 'active': currentImage === '{{ image.image.url }}' }"
                             @click="changeImage('{{ image.image.url }}')"
                             loading="lazy"
+                            onerror="this.style.display='none'"
                         >
                         {% endfor %}
                     {% elif product.main_image %}
                     <img
                         src="{{ product.main_image.url }}"
+                        alt="{{ product.name }}"
+                        class="gallery-thumbnail active"
+                        loading="lazy"
+                        onerror="this.src='https://via.placeholder.com/80x80/1B2A4A/C9A84C?text=Product'"
+                    >
+                    {% else %}
+                    <img
+                        src="https://via.placeholder.com/80x80/1B2A4A/C9A84C?text=Product"
                         alt="{{ product.name }}"
                         class="gallery-thumbnail active"
                         loading="lazy"
@@ -318,14 +316,12 @@
                             <button
                                 type="button"
                                 class="color-option"
-                                :class="{ 'selected': selectedColor === '{{ color }}' }"
-                                @click="selectedColor = '{{ color }}'; form.color = '{{ color }}'"
-                            >
-                                {{ color }}
-                            </button>
+                                x-text="'{{ color }}'"
+                                :class="{ 'selected': form.color === '{{ color }}' }"
+                                @click="form.color = '{{ color }}'; selectedColor = '{{ color }}'"
+                            >{{ color }}</button>
                             {% endfor %}
                         </div>
-                        <input type="hidden" x-model="form.color" required>
                     </div>
                     {% endif %}
 
@@ -338,14 +334,12 @@
                             <button
                                 type="button"
                                 class="size-option"
-                                :class="{ 'selected': selectedSize === '{{ size }}' }"
-                                @click="selectedSize = '{{ size }}'; form.size = '{{ size }}'"
-                            >
-                                {{ size }}
-                            </button>
+                                x-text="'{{ size }}'"
+                                :class="{ 'selected': form.size === '{{ size }}' }"
+                                @click="form.size = '{{ size }}'; selectedSize = '{{ size }}'"
+                            >{{ size }}</button>
                             {% endfor %}
                         </div>
-                        <input type="hidden" x-model="form.size" required>
                     </div>
                     {% endif %}
 
@@ -580,17 +574,21 @@
 
 {% block extra_js %}
 <script>
-// Product Image Gallery
+// Product Image Gallery with Alpine.js
 function productGallery() {
     return {
-        currentImage: '{% if product.images.first %}{{ product.images.first.image.url }}{% elif product.main_image %}{{ product.main_image.url }}{% else %}https://via.placeholder.com/600x600/1B2A4A/C9A84C?text={{ product.name|urlencode }}{% endif %}',
+        currentImage: '{% if product.main_image %}{{ product.main_image.url }}{% else %}{% if product.images.first %}{{ product.images.first.image.url }}{% else %}https://via.placeholder.com/600x600/1B2A4A/C9A84C?text={{ product.name|urlencode }}{% endif %}{% endif %}',
         changeImage(newImage) {
             this.currentImage = newImage;
+        },
+        init() {
+            // Initialize with the first available image
+            console.log('Initial image:', this.currentImage);
         }
     }
 }
 
-// Order Form
+// Order Form with Alpine.js
 function orderForm() {
     return {
         selectedColor: '',
@@ -607,6 +605,23 @@ function orderForm() {
         loading: false,
         message: '',
         messageClass: '',
+
+        init() {
+            // Log initialization for debugging
+            console.log('Order form initialized');
+        },
+
+        selectColor(color) {
+            this.form.color = color;
+            this.selectedColor = color;
+            console.log('Color selected:', color);
+        },
+
+        selectSize(size) {
+            this.form.size = size;
+            this.selectedSize = size;
+            console.log('Size selected:', size);
+        },
 
         async submitOrder() {
             // Validate color and size

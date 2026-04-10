@@ -3,7 +3,8 @@
     "allow": [
       "Bash(python:*)",
       "Bash(pip install:*)",
-      "Bash(curl -s http://127.0.0.1:8000/)"
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(dir \"E:\\\\Python software\\\\luxury-Store\\\\LUXURYStore\\\\media\\\\products\")"
     ]
   }
 }
