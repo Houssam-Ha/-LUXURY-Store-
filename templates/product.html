@@ -203,7 +203,7 @@
                             :class="{ 'active': currentImage === '{{ image.image.url }}' }"
                             @click="changeImage('{{ image.image.url }}')"
                             loading="lazy"
-                            onerror="this.style.display='none'"
+                            onerror="this.src='https://via.placeholder.com/80x80/1B2A4A/C9A84C?text=Product'; this.style.display='block'"
                         >
                         {% endfor %}
                     {% elif product.main_image %}
@@ -212,7 +212,7 @@
                         alt="{{ product.name }}"
                         class="gallery-thumbnail active"
                         loading="lazy"
-                        onerror="this.src='https://via.placeholder.com/80x80/1B2A4A/C9A84C?text=Product'"
+                        onerror="this.src='https://via.placeholder.com/80x80/1B2A4A/C9A84C?text=Product'; this.style.display='block'"
                     >
                     {% else %}
                     <img
@@ -318,7 +318,7 @@
                                 class="color-option"
                                 x-text="'{{ color }}'"
                                 :class="{ 'selected': form.color === '{{ color }}' }"
-                                @click="form.color = '{{ color }}'; selectedColor = '{{ color }}'"
+                                @click="selectColor('{{ color }}')"
                             >{{ color }}</button>
                             {% endfor %}
                         </div>
@@ -336,7 +336,7 @@
                                 class="size-option"
                                 x-text="'{{ size }}'"
                                 :class="{ 'selected': form.size === '{{ size }}' }"
-                                @click="form.size = '{{ size }}'; selectedSize = '{{ size }}'"
+                                @click="selectSize('{{ size }}')"
                             >{{ size }}</button>
                             {% endfor %}
                         </div>
@@ -350,8 +350,9 @@
                             type="number"
                             x-model="form.quantity"
                             min="1"
-                            max="5"
+                            max="10"
                             class="quantity-input"
+                            @change="updateTotal"
                         >
                     </div>
 
@@ -407,17 +408,25 @@
 
                     <!-- Order Summary -->
                     <div class="bg-gold/10 rounded-xl p-6">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-navy">الإجمالي:</span>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-semibold text-navy">المجموع:</span>
                             <span class="text-3xl font-bold text-gold" x-text="form.quantity * {{ product.price }} + ' درهم'"></span>
                         </div>
+                        <div class="flex justify-between items-center text-sm text-gray-600">
+                            <span>السعر الوحدة:</span>
+                            <span>{{ product.price }} درهم</span>
+                        </div>
                     </div>
+
+                    <!-- Hidden fields for color and size -->
+                    <input type="hidden" name="color" x-model="form.color">
+                    <input type="hidden" name="size" x-model="form.size">
 
                     <!-- Submit Button -->
                     <button
                         type="submit"
                         class="w-full btn-primary text-xl"
-                        :disabled="loading || {{ product.stock }} == 0"
+                        :disabled="loading || {{ product.stock }} == 0 || !form.color || !form.size"
                     >
                         <span x-show="!loading">اطلب الآن - الدفع عند الاستلام</span>
                         <span x-show="loading">جاري الإرسال...</span>
@@ -623,6 +632,12 @@ function orderForm() {
             console.log('Size selected:', size);
         },
 
+        updateTotal() {
+            // Ensure quantity is within bounds
+            if (this.form.quantity < 1) this.form.quantity = 1;
+            if (this.form.quantity > 10) this.form.quantity = 10;
+        },
+
         async submitOrder() {
             // Validate color and size
             if (!this.form.color) {
@@ -636,55 +651,21 @@ function orderForm() {
                 return;
             }
 
-            this.loading = true;
-            this.message = '';
+            // Submit to checkout page with selected options
+            const formData = new FormData();
+            formData.append('customer_name', this.form.name);
+            formData.append('customer_phone', this.form.phone);
+            formData.append('customer_email', this.form.email || '');
+            formData.append('customer_address', this.form.address);
+            formData.append('city', this.form.city);
+            formData.append('product', {{ product.id }});
+            formData.append('color', this.form.color);
+            formData.append('size', this.form.size);
+            formData.append('quantity', this.form.quantity);
 
-            try {
-                const response = await fetch('/api/orders/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        customer_name: this.form.name,
-                        customer_phone: this.form.phone,
-                        customer_address: this.form.address,
-                        city: this.form.city,
-                        product: {{ product.id }},
-                        color: this.form.color,
-                        size: this.form.size,
-                        quantity: this.form.quantity
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    this.message = '✅ تم استلام طلبك بنجاح! سنتصل بك قريباً لتأكيد الطلب';
-                    this.messageClass = 'bg-green-500 text-white';
-                    this.form = { name: '', phone: '', city: '', address: '', color: '', size: '', quantity: 1 };
-                    this.selectedColor = '';
-                    this.selectedSize = '';
-
-                    // Track Facebook Pixel Purchase
-                    if (typeof fbq !== 'undefined') {
-                        fbq('track', 'Purchase', { value: {{ product.price }}, currency: 'MAD' });
-                    }
-
-                    setTimeout(() => {
-                        window.location.href = '/order-success/' + data.order_number + '/';
-                    }, 2000);
-                } else {
-                    this.message = '❌ حدث خطأ. يرجى التحقق من البيانات والمحاولة مرة أخرى';
-                    this.messageClass = 'bg-red-500 text-white';
-                }
-            } catch (error) {
-                this.message = '❌ حدث خطأ. يرجى المحاولة مرة أخرى';
-                this.messageClass = 'bg-red-500 text-white';
-            } finally {
-                this.loading = false;
-            }
+            // Redirect to checkout with form data
+            const params = new URLSearchParams(formData);
+            window.location.href = '/checkout/?' + params.toString();
         }
     }
 }

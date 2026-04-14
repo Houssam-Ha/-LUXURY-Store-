@@ -1,10 +1,10 @@
+
 {
-  "permissions": {
-    "allow": [
-      "Bash(python:*)",
-      "Bash(pip install:*)",
-      "Bash(curl -s http://127.0.0.1:8000/)",
-      "Bash(dir \"E:\\\\Python software\\\\luxury-Store\\\\LUXURYStore\\\\media\\\\products\")"
-    ]
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+    "ANTHROPIC_AUTH_TOKEN": "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",
+    "ANTHROPIC_MODEL": "nvidia/nemotron-3-super-120b-a12b:free"
   }
 }
+
+

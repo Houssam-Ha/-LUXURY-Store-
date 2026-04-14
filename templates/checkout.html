@@ -53,7 +53,7 @@
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <h2 class="font-heading text-2xl font-semibold text-navy mb-6">معلومات الشحن</h2>
 
-                    <form method="post" action="{% url 'checkout' %}">
+                    <form method="post" action="{% url 'store:checkout' %}">
                         {% csrf_token %}
 
                         <div class="space-y-4">
